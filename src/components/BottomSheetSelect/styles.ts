@@ -6,6 +6,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
+  arrow: {
+    width: 10,
+    height: 10,
+  },
+  arrowContainer: {
+    alignItems: 'flex-end',
+  },
   button: {
     borderRadius: 5,
     alignItems: 'center',
