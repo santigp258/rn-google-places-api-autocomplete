@@ -1,6 +1,6 @@
 import BottomSheetFilter from '../BottomSheetFilter';
-import React, { useMemo, useRef } from 'react';
-import { FlatList, ListRenderItem, Text } from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import styles from './styles';
 import SelectButton from './SelectButton';
@@ -8,13 +8,17 @@ import SelectItem from './SelectItem';
 import type { ClosableType, FCWithChildren } from '../../types';
 import type { BottomSheetOptionType, BottomSheetSelectProps } from './types';
 import type { BottomSheetFilterI } from '../BottomSheetFilter/types';
+import Conditional from '../Conditional';
 
 const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
   placeholder = 'Select an option',
   options = [],
-  selectedOption = {},
+  selectedOption,
   onChange,
   hasDefaultOption = true,
+  renderFooter,
+  renderHeader,
+  _container,
   ...props
 }) => {
   const bottomSheetFilterRef = useRef<BottomSheetFilterI>(null);
@@ -33,6 +37,7 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
     const isSelected = option.value === selectedOption?.value;
     return (
       <SelectItem
+        style={styles.selectItem}
         label={option.label}
         onPress={(e) => {
           if (option.onPress) {
@@ -62,19 +67,31 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
     [options, hasDefaultOption]
   );
 
+  const HeaderComponent = useCallback(() => {
+    const refMethods = bottomSheetFilterRef.current as ClosableType;
+    return <>{renderHeader?.(refMethods) ?? null}</>;
+  }, [renderHeader]);
+
   return (
     <BottomSheetFilter
       {...props}
       renderButton={renderButton ?? props.renderButton}
       ref={bottomSheetFilterRef}
     >
-      {() => (
-        <BottomSheetView>
+      {(filterCtx) => (
+        <BottomSheetView {..._container}>
           <FlatList
             data={mappedOptions}
+            contentContainerStyle={styles.flatlistContainerStyle}
+            ListHeaderComponent={HeaderComponent}
             renderItem={renderItem}
             ListEmptyComponent={renderItemEmptyComponent}
           />
+          <Conditional value={!!renderFooter}>
+            <View style={styles.footerContainer}>
+              {renderFooter?.(filterCtx)}
+            </View>
+          </Conditional>
         </BottomSheetView>
       )}
     </BottomSheetFilter>

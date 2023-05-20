@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import React, { FC, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import useDebounce from '../../hooks/useDebounce';
 
 import type { ClosableType } from '../../types';
 import BottomSheetSelect from '../BottomSheetSelect';
+import type { BottomSheetFilterAutocompleteProps } from './types';
+import styles from './styles';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
-const BottomSheetFilterAutocomplete = ({
+const BottomSheetFilterAutocomplete: FC<BottomSheetFilterAutocompleteProps> = ({
   placeholder = 'Choose Options',
   options = [],
   searchPlaceholder = 'Search ',
@@ -21,18 +24,35 @@ const BottomSheetFilterAutocomplete = ({
   const renderFooter = ({ onClose }: ClosableType) => {
     return (
       <TouchableOpacity
+        style={styles.button}
         onPress={() => {
           setCurrentTerm('');
           onClose?.();
         }}
       >
-        <Text>Confirm</Text>
+        <Text style={styles.buttonText}>Save</Text>
       </TouchableOpacity>
     );
   };
+
+  const renderHeader = (args: ClosableType) => {
+    return (
+      <View style={styles.inputContainer}>
+        <BottomSheetTextInput style={styles.input} placeholder="Search" />
+      </View>
+    );
+  };
+
   return (
     <>
-      <BottomSheetSelect renderFooter={renderFooter} />
+      <BottomSheetSelect
+        handleStyle={styles.handleStyle}
+        _container={{
+          style: styles.bottomSheetContainer,
+        }}
+        renderFooter={renderFooter}
+        renderHeader={renderHeader}
+      />
     </>
   );
 };

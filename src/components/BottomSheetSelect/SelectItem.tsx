@@ -10,7 +10,11 @@ export const SelectItem: FCWithChildren<SelectItemProps> = ({
   ...props
 }) => {
   return (
-    <TouchableOpacity style={styles.option} activeOpacity={0.3} {...props}>
+    <TouchableOpacity
+      activeOpacity={0.3}
+      {...props}
+      style={[styles.option, props.style]}
+    >
       <View style={[styles.container, isSelected && styles.selectedOption]}>
         <Text
           style={[styles.optionText, isSelected && styles.selectedOptionText]}

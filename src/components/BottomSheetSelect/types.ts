@@ -3,6 +3,9 @@ import type {
   TouchableOpacityProps,
 } from 'react-native';
 import type { BottomSheetFilterProps } from '../BottomSheetFilter/types';
+import type { ClosableType } from 'rn-google-places-autocomplete';
+import type { BottomSheetViewProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetView/types';
+import type { ReactNode } from 'react';
 
 export interface SelectButtonProps extends TouchableOpacityProps {}
 
@@ -27,5 +30,7 @@ export interface BottomSheetSelectProps
   hasDefaultOption?: boolean;
   options?: BottomSheetOptionType[];
   placeholder?: string;
+  renderHeader?: (args: ClosableType) => ReactNode;
   onChange?: (option: BottomSheetOptionType | null) => void;
+  _container?: Omit<BottomSheetViewProps, 'children'>;
 }

@@ -6,6 +6,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
+  selectItem: {
+    backgroundColor: 'white',
+  },
+  flatlistContainerStyle: {
+    paddingHorizontal: 5,
+  },
   arrow: {
     width: 10,
     height: 10,
@@ -23,8 +29,6 @@ const styles = StyleSheet.create({
   option: {
     marginTop: 4,
     borderRadius: 5,
-    borderBottomWidth: 1,
-    borderColor: colors.gray['300'],
     alignItems: 'center',
   },
   selectedOption: {
@@ -53,6 +57,10 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 1,
     borderColor: 'red',
+  },
+  footerContainer: {
+    marginBottom: 40,
+    paddingHorizontal: 10,
   },
 });
 

@@ -20,6 +20,30 @@ const styles = StyleSheet.create({
     marginRight: 4,
     fontSize: 20,
   },
+  input: {
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 2,
+  },
+  inputContainer: {
+    marginTop: 5,
+  },
+  handleStyle: {
+    backgroundColor: colors.gray['200'],
+  },
+  bottomSheetContainer: {
+    flex: 1,
+    backgroundColor: colors.gray['200'],
+  },
+  button: {
+    backgroundColor: colors.primary,
+    padding: 15,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
 });
 
 export default styles;
