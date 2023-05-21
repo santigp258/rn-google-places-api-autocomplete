@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     paddingHorizontal: 10,
   },
+  headerContainer: {
+    marginBottom: 5,
+    paddingHorizontal: 5,
+  },
 });
 
 export default styles;

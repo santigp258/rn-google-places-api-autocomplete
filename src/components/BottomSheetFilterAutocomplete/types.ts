@@ -1,4 +1,6 @@
 import type { BottomSheetSelectProps } from '../BottomSheetSelect/types';
 
 export interface BottomSheetFilterAutocompleteProps
-  extends BottomSheetSelectProps {}
+  extends BottomSheetSelectProps {
+  apiKey: string;
+}

@@ -1,5 +1,5 @@
 import BottomSheetFilter from '../BottomSheetFilter';
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import styles from './styles';
@@ -67,11 +67,6 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
     [options, hasDefaultOption]
   );
 
-  const HeaderComponent = useCallback(() => {
-    const refMethods = bottomSheetFilterRef.current as ClosableType;
-    return <>{renderHeader?.(refMethods) ?? null}</>;
-  }, [renderHeader]);
-
   return (
     <BottomSheetFilter
       {...props}
@@ -80,13 +75,19 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
     >
       {(filterCtx) => (
         <BottomSheetView {..._container}>
+          <Conditional value={!!renderHeader}>
+            <View style={styles.headerContainer}>
+              {renderHeader?.(filterCtx)}
+            </View>
+          </Conditional>
+
           <FlatList
             data={mappedOptions}
             contentContainerStyle={styles.flatlistContainerStyle}
-            ListHeaderComponent={HeaderComponent}
             renderItem={renderItem}
             ListEmptyComponent={renderItemEmptyComponent}
           />
+
           <Conditional value={!!renderFooter}>
             <View style={styles.footerContainer}>
               {renderFooter?.(filterCtx)}
