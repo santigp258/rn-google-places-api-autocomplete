@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const verbs = ['get', 'post', 'put', 'delete', 'patch'] as const;
 type HttpVerb = (typeof verbs)[number];
@@ -15,11 +15,21 @@ type VerbRequests<R = unknown> = Record<HttpVerb, VerbRequest<R>>;
  */
 const useFetch = <ResponseT = undefined>(): {
   request: VerbRequests<ResponseT>;
-  response: ResponseT | undefined;
+  response: ResponseT | null;
   isLoading: boolean;
 } => {
   const [isLoading, setLoading] = useState(false);
   const [response, setResponse] = useState<ResponseT | null>(null);
+
+  const controllerRef = useRef<AbortController | null>();
+
+  useEffect(() => {
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+    };
+  }, []);
 
   const requestFactory =
     (method: HttpVerb): VerbRequest =>
@@ -29,10 +39,16 @@ const useFetch = <ResponseT = undefined>(): {
     ): Promise<unknown> => {
       setLoading(true);
 
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
+
       try {
+        controllerRef.current = new AbortController();
         const res = (await (
           await fetch(url, {
             method,
+            signal: controllerRef.current?.signal,
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
@@ -45,10 +61,12 @@ const useFetch = <ResponseT = undefined>(): {
 
         return res;
       } catch (e) {
+        console.error('GOOGLE-AUTOCOMPLETE-ERROR', e);
         setResponse(null);
         return null;
       } finally {
         setLoading(false);
+        controllerRef.current = null;
       }
     };
 

@@ -9,6 +9,7 @@ import type { ClosableType, FCWithChildren } from '../../types';
 import type { BottomSheetOptionType, BottomSheetSelectProps } from './types';
 import type { BottomSheetFilterI } from '../BottomSheetFilter/types';
 import Conditional from '../Conditional';
+import PoweredByGoogle from '../GooglePlacesAutocomplete/PoweredByGoogle';
 
 const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
   placeholder = 'Select an option',
@@ -35,6 +36,9 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
     item: option,
   }) => {
     const isSelected = option.value === selectedOption?.value;
+    if (option.value === 'powered-google') {
+      return <PoweredByGoogle />;
+    }
     return (
       <SelectItem
         style={styles.selectItem}
@@ -63,6 +67,10 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
           value: null,
         },
         ...options,
+        options.length > 0 && {
+          label: 'N/A',
+          value: 'powered-google',
+        },
       ].filter(Boolean) as BottomSheetOptionType[],
     [options, hasDefaultOption]
   );

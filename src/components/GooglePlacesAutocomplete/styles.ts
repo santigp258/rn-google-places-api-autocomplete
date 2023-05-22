@@ -48,6 +48,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.gray['200'],
   },
+  listItem: {
+    backgroundColor: 'white',
+  },
+  poweredByGoogleItemContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  poweredByGoogleImage: {
+    width: 100,
+    backgroundColor: 'red',
+  },
   button: {
     backgroundColor: colors.primary,
     padding: 15,

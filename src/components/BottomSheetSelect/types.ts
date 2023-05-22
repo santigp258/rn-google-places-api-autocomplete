@@ -1,6 +1,7 @@
 import type {
   GestureResponderEvent,
   TouchableOpacityProps,
+  ViewProps,
 } from 'react-native';
 import type { BottomSheetFilterProps } from '../BottomSheetFilter/types';
 import type { ClosableType } from 'rn-google-places-autocomplete';
@@ -10,8 +11,10 @@ import type { ReactNode } from 'react';
 export interface SelectButtonProps extends TouchableOpacityProps {}
 
 export interface SelectItemProps extends TouchableOpacityProps {
-  label: string;
+  label?: string;
   isSelected?: boolean;
+  isPreview?: boolean;
+  _view?: ViewProps;
 }
 
 export type BottomSheetOptionType = {
