@@ -16,7 +16,7 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
   options = [],
   selectedOption,
   onChange,
-  hasDefaultOption = true,
+  hasDefaultOption = false,
   renderFooter,
   renderHeader,
   _container,

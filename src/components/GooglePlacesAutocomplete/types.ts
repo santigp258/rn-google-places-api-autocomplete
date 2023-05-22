@@ -10,7 +10,10 @@ export interface GooglePlacesAutocompleteProps
   apiKey: string;
   searchPlaceholder?: string;
   // This function is useful to modify the search parameter key.
-  queryFn?: (arg: { term: string }) => Record<string, string>;
+  query?:
+    | Record<string, string>
+    | ((arg: { term: string }) => Record<string, string>);
+
   visualization?: GooglePlacesAutocompleteVisualizationType;
   delay?: number;
   endpointType?: GooglePlacesEndpointsType;

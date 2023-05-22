@@ -34,7 +34,7 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
   endpointType = 'autocomplete',
   visualization = 'bottom-sheet',
   delay = 500,
-  queryFn,
+  query,
   onChange,
   apiKey,
   ...rest
@@ -57,7 +57,11 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
       input: value,
       query: value,
       key: apiKey,
-      ...(queryFn ? queryFn({ term: value }) : {}),
+      ...(query
+        ? typeof query === 'function'
+          ? query({ term: value })
+          : query
+        : {}),
     };
 
     const searchParams = new URLSearchParams(params);
@@ -97,7 +101,10 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
         onChange={getPlaces}
         placeholder={searchPlaceholder}
         onClear={handleClear}
-        defaultValue={rest.selectedOption?.label ?? ''}
+        defaultValue={
+          // ignore N/A option as default value
+          rest.selectedOption?.value ? rest.selectedOption?.label : ''
+        }
         component={BottomSheetTextInput}
       />
     );
@@ -130,14 +137,15 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
       {visualization === 'bottom-sheet' ? (
         <BottomSheetSelect
           handleStyle={styles.handleStyle}
-          _container={{
-            style: styles.bottomSheetContainer,
-          }}
           options={results}
           onChange={onChange}
           renderFooter={renderFooter}
           renderHeader={renderHeader}
           {...rest}
+          _container={{
+            ...rest._container,
+            style: [styles.bottomSheetContainer, rest._container?.style],
+          }}
         />
       ) : (
         <>
