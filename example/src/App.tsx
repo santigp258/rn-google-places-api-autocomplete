@@ -1,31 +1,43 @@
 import * as React from 'react';
+import { useState } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'rn-google-places-autocomplete';
+import { StyleSheet, View } from 'react-native';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import type { BottomSheetOptionType } from '../../src/components/BottomSheetSelect/types';
+import GooglePlacesAutocomplete from '../../src/components/GooglePlacesAutocomplete';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const [selectedOption, setSelectedOption] =
+    useState<BottomSheetOptionType | null>(null);
+  const apiKey = process.env.GOOGLE_API_KEY ?? '';
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <BottomSheetModalProvider>
+      <View style={styles.container}>
+        <View style={styles.filterContainer}>
+          <GooglePlacesAutocomplete
+            apiKey={apiKey}
+            onChange={(option) => setSelectedOption(option)}
+            selectedOption={selectedOption}
+            query={{
+              components: 'country:co',
+              types: '(cities)',
+            }}
+          />
+        </View>
+      </View>
+    </BottomSheetModalProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 50,
+    paddingHorizontal: 10,
+    backgroundColor: '#d4d4d8',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  filterContainer: {
+    width: '100%',
   },
 });
