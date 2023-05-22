@@ -17,6 +17,7 @@ export default function App() {
         <View style={styles.filterContainer}>
           <GooglePlacesAutocomplete
             apiKey={apiKey}
+            endpointType="textSearch"
             onChange={(option) => setSelectedOption(option)}
             selectedOption={selectedOption}
             query={{

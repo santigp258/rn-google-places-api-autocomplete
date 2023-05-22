@@ -8,6 +8,9 @@ type VerbRequest<Response = unknown> = (
   payload?: Record<string | number | symbol, unknown>
 ) => Promise<Response>;
 
+const errorLog = (...args: string[]) =>
+  console.error('GOOGLE_AUTOCOMPLETE_ERROR', ...args);
+
 type VerbRequests<R = unknown> = Record<HttpVerb, VerbRequest<R>>;
 
 /**
@@ -55,13 +58,17 @@ const useFetch = <ResponseT = undefined>(): {
             },
             body: JSON.stringify(payload),
           })
-        ).json()) as ResponseT;
+        ).json()) as ResponseT & { error_message?: string; status?: string };
+
+        if (res.error_message) {
+          errorLog(res.error_message, res?.status ?? '');
+        }
 
         setResponse(res);
 
         return res;
       } catch (e) {
-        console.error('GOOGLE-AUTOCOMPLETE-ERROR', e);
+        errorLog((e as Error)?.message ?? 'Unknown Error');
         setResponse(null);
         return null;
       } finally {
