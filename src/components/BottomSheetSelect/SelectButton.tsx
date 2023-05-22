@@ -11,8 +11,10 @@ export const SelectButton: FCWithChildren<SelectButtonProps> = ({
   return (
     <TouchableOpacity style={styles.button} activeOpacity={0.5} {...props}>
       <View style={styles.container}>
-        <View>
-          <Text style={styles.placeholder}>{children}</Text>
+        <View style={styles.placeholderContainer}>
+          <Text style={styles.placeholder} numberOfLines={1}>
+            {children}
+          </Text>
         </View>
         <View style={styles.arrowContainer}>
           <Image

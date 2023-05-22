@@ -26,7 +26,7 @@ export type BottomSheetOptionType = {
 
 export interface BottomSheetSelectProps
   extends Omit<BottomSheetFilterProps, 'onChange'> {
-  selectedOption?: BottomSheetOptionType;
+  selectedOption?: BottomSheetOptionType | null;
   hasDefaultOption?: boolean;
   options?: BottomSheetOptionType[];
   placeholder?: string;

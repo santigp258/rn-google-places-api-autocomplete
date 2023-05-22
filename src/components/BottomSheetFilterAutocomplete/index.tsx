@@ -1,55 +1,31 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
-import type { ClosableType } from '../../types';
+import type { ClosableType, TextSearchResponseI } from '../../types';
 import BottomSheetSelect from '../BottomSheetSelect';
 import type { BottomSheetFilterAutocompleteProps } from './types';
 import styles from './styles';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import useDebounceCallback from '../../hooks/useDebounceCallback';
 import useFetch from '../../hooks/useFetch';
+import type { BottomSheetOptionType } from '../BottomSheetSelect/types';
+import SearchInput from './SearchInput';
 
 const endpoints = {
   textSearch: 'https://maps.googleapis.com/maps/api/place/textsearch/json',
 };
 
-export interface SearchInputProps {
-  onChange?: (text: string) => void;
-}
+const BottomSheetFilterAutocomplete: FC<
+  Omit<BottomSheetFilterAutocompleteProps, 'children'>
+> = ({ searchPlaceholder = 'Search ', onChange, apiKey, ...rest }) => {
+  const [results, setResults] = useState<BottomSheetOptionType[]>([]);
 
-const SearchInput: FC<SearchInputProps> = ({ onChange }) => {
-  const [currentTerm, setCurrentTerm] = useState('');
-
-  const handleChangeText = (text: string) => {
-    setCurrentTerm(text);
-    onChange?.(text);
-  };
-
-  return (
-    <View style={styles.inputContainer}>
-      <BottomSheetTextInput
-        style={styles.input}
-        placeholder="Search"
-        onChangeText={handleChangeText}
-        value={currentTerm}
-      />
-    </View>
-  );
-};
-
-const BottomSheetFilterAutocomplete: FC<BottomSheetFilterAutocompleteProps> = ({
-  placeholder = 'Choose Options',
-  options = [],
-  searchPlaceholder = 'Search ',
-  selectedOptions = [],
-  onChange,
-  apiKey,
-}) => {
-  const [results, setResults] = useState(options);
-
-  const { isLoading, request } = useFetch();
+  const { isLoading, request } = useFetch<TextSearchResponseI>();
 
   const getPlaces = useDebounceCallback(async (value: string) => {
+    if (value === '') {
+      setResults([]);
+      return;
+    }
     const params = {
       query: value,
       key: apiKey,
@@ -80,34 +56,45 @@ const BottomSheetFilterAutocomplete: FC<BottomSheetFilterAutocompleteProps> = ({
             onClose?.();
           }}
         >
-          <Text style={styles.buttonText}>
-            {isLoading ? 'loading' : 'Save'}
-          </Text>
+          {isLoading ? (
+            <View style={styles.buttonContainerLoader}>
+              <ActivityIndicator color="white" />
+            </View>
+          ) : (
+            <Text style={styles.buttonText}>Save</Text>
+          )}
         </TouchableOpacity>
       );
     },
     [isLoading]
   );
 
-  const renderHeader = useCallback(
-    (args: ClosableType) => {
-      return <SearchInput onChange={getPlaces} />;
-    },
-    [getPlaces]
-  );
-  return (
-    <>
-      <BottomSheetSelect
-        handleStyle={styles.handleStyle}
-        _container={{
-          style: styles.bottomSheetContainer,
-        }}
-        options={results}
-        onChange={onChange}
-        renderFooter={renderFooter}
-        renderHeader={renderHeader}
+  const handleClear = useCallback(() => {
+    setResults([]);
+  }, []);
+
+  const renderHeader = useCallback(() => {
+    return (
+      <SearchInput
+        onChange={getPlaces}
+        placeholder={searchPlaceholder}
+        onClear={handleClear}
       />
-    </>
+    );
+  }, [getPlaces, searchPlaceholder, handleClear]);
+
+  return (
+    <BottomSheetSelect
+      handleStyle={styles.handleStyle}
+      _container={{
+        style: styles.bottomSheetContainer,
+      }}
+      options={results}
+      onChange={onChange}
+      renderFooter={renderFooter}
+      renderHeader={renderHeader}
+      {...rest}
+    />
   );
 };
 

@@ -27,6 +27,19 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 5,
+    position: 'relative',
+  },
+  inputCloseButton: {
+    position: 'absolute',
+    right: 15,
+    height: '100%',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputCloseImage: {
+    width: 10,
+    height: 10,
   },
   handleStyle: {
     backgroundColor: colors.gray['200'],
@@ -43,6 +56,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     textAlign: 'center',
+  },
+  buttonContainerLoader: {
+    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
   },
 });
 

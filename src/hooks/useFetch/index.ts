@@ -19,7 +19,7 @@ const useFetch = <ResponseT = undefined>(): {
   isLoading: boolean;
 } => {
   const [isLoading, setLoading] = useState(false);
-  const [response, setResponse] = useState<ResponseT>();
+  const [response, setResponse] = useState<ResponseT | null>(null);
 
   const requestFactory =
     (method: HttpVerb): VerbRequest =>
@@ -29,20 +29,27 @@ const useFetch = <ResponseT = undefined>(): {
     ): Promise<unknown> => {
       setLoading(true);
 
-      const res = (await (
-        await fetch(url, {
-          method,
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        })
-      ).json()) as ResponseT;
+      try {
+        const res = (await (
+          await fetch(url, {
+            method,
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          })
+        ).json()) as ResponseT;
 
-      setResponse(res);
-      setLoading(false);
-      return res;
+        setResponse(res);
+
+        return res;
+      } catch (e) {
+        setResponse(null);
+        return null;
+      } finally {
+        setLoading(false);
+      }
     };
 
   const request: VerbRequests<ResponseT> = Object.fromEntries(

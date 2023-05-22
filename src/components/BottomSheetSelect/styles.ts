@@ -41,10 +41,12 @@ const styles = StyleSheet.create({
     color: colors.gray['700'],
     textTransform: 'capitalize',
   },
-
   placeholder: {
     textTransform: 'capitalize',
     color: colors.gray['600'],
+  },
+  placeholderContainer: {
+    marginRight: 5,
   },
   container: {
     padding: 15,
