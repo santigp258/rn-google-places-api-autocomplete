@@ -1,4 +1,5 @@
 const colors = {
+  // Inspired by the tailwind colors. https://tailwindcss.com/docs/customizing-colors#default-color-palette
   gray: {
     '200': '#f5f5f4',
     '300': '#d1d5db',
