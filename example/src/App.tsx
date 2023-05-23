@@ -17,12 +17,13 @@ export default function App() {
         <View style={styles.filterContainer}>
           <GooglePlacesAutocomplete
             apiKey={apiKey}
-            endpointType="textSearch"
+            endpointType="autocomplete"
             onChange={(option) => setSelectedOption(option)}
             selectedOption={selectedOption}
             query={{
               components: 'country:co',
               types: '(cities)',
+              language: 'es',
             }}
           />
         </View>

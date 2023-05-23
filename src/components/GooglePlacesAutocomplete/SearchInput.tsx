@@ -11,6 +11,7 @@ const SearchInput = React.forwardRef<SearchInputMethods, SearchInputProps>(
       component: TextInputComponent = TextInput,
       onClear,
       defaultValue = '',
+      renderClearButton,
       ...rest
     },
     ref
@@ -47,15 +48,19 @@ const SearchInput = React.forwardRef<SearchInputMethods, SearchInputProps>(
           style={[styles.input, rest.style]}
         />
         <Conditional value={currentTerm !== ''}>
-          <TouchableOpacity
-            style={styles.inputCloseButton}
-            onPress={handleClear}
-          >
-            <Image
-              source={require('../../assets/close.png')}
-              style={styles.inputCloseImage}
-            />
-          </TouchableOpacity>
+          {renderClearButton ? (
+            renderClearButton({ onClear: handleClear })
+          ) : (
+            <TouchableOpacity
+              style={styles.inputCloseButton}
+              onPress={handleClear}
+            >
+              <Image
+                source={require('../../assets/close.png')}
+                style={styles.inputCloseImage}
+              />
+            </TouchableOpacity>
+          )}
         </Conditional>
       </View>
     );

@@ -1,5 +1,5 @@
 import BottomSheetFilter from '../BottomSheetFilter';
-import React, { useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import styles from './styles';
@@ -17,44 +17,64 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
   selectedOption,
   onChange,
   hasDefaultOption = false,
+  showPoweredByGoogle = true,
   renderFooter,
   renderHeader,
+  renderPoweredComponent,
   _container,
+  _flatlist,
+  _selectButton,
   ...props
 }) => {
   const bottomSheetFilterRef = useRef<BottomSheetFilterI>(null);
 
   const renderButton = ({ onOpen }: ClosableType) => (
-    <SelectButton onPress={onOpen}>
+    <SelectButton
+      {..._selectButton}
+      onPress={(e) => {
+        _selectButton?.onPress?.(e);
+        onOpen?.();
+      }}
+    >
       {selectedOption?.value
         ? selectedOption?.label ?? placeholder
         : placeholder}
     </SelectButton>
   );
 
-  const renderItem: ListRenderItem<BottomSheetOptionType> = ({
-    item: option,
-  }) => {
-    const isSelected = option.value === selectedOption?.value;
-    if (option.value === 'powered-google') {
-      return <PoweredByGoogle />;
-    }
-    return (
-      <SelectItem
-        style={styles.selectItem}
-        label={option.label}
-        onPress={(e) => {
-          if (option.onPress) {
-            option.onPress(option, options, e);
-          }
-          onChange?.(option);
-          bottomSheetFilterRef.current?.onClose();
-        }}
-        isSelected={isSelected}
-      />
-    );
-  };
-
+  const renderItem: ListRenderItem<BottomSheetOptionType> = useCallback(
+    ({ item: option }) => {
+      const isSelected = option.value === selectedOption?.value;
+      if (option.value === 'powered-google' && showPoweredByGoogle) {
+        return renderPoweredComponent ? (
+          <>{renderPoweredComponent()}</>
+        ) : (
+          <PoweredByGoogle />
+        );
+      }
+      return (
+        <SelectItem
+          style={styles.selectItem}
+          label={option.label}
+          onPress={(e) => {
+            if (option.onPress) {
+              option.onPress(option, options, e);
+            }
+            onChange?.(option);
+            bottomSheetFilterRef.current?.onClose();
+          }}
+          isSelected={isSelected}
+        />
+      );
+    },
+    [
+      renderPoweredComponent,
+      onChange,
+      options,
+      selectedOption?.value,
+      showPoweredByGoogle,
+    ]
+  );
   const renderItemEmptyComponent = () => {
     return <Text style={styles.noOptionsText}>No results were found</Text>;
   };
@@ -78,7 +98,7 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
   return (
     <BottomSheetFilter
       {...props}
-      renderButton={renderButton ?? props.renderButton}
+      renderButton={props.renderButton ?? renderButton}
       ref={bottomSheetFilterRef}
     >
       {(filterCtx) => (
@@ -90,10 +110,14 @@ const BottomSheetSelect: FCWithChildren<BottomSheetSelectProps> = ({
           </Conditional>
 
           <FlatList
-            data={mappedOptions}
-            contentContainerStyle={styles.flatlistContainerStyle}
             renderItem={renderItem}
             ListEmptyComponent={renderItemEmptyComponent}
+            {..._flatlist}
+            data={mappedOptions}
+            contentContainerStyle={[
+              styles.flatlistContainerStyle,
+              _flatlist?.contentContainerStyle,
+            ]}
           />
 
           <Conditional value={!!renderFooter}>

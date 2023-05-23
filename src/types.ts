@@ -71,3 +71,8 @@ export interface PlaceAutocompleteResponseI {
   predictions: Prediction[];
   status: string;
 }
+
+export interface GooglePoweredI {
+  showPoweredByGoogle?: boolean;
+  renderPoweredComponent?: () => ReactNode;
+}

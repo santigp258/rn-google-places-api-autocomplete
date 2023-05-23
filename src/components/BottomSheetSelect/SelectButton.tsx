@@ -6,20 +6,31 @@ import type { SelectButtonProps } from './types';
 
 export const SelectButton: FCWithChildren<SelectButtonProps> = ({
   children,
+  _image,
+  _text,
   ...props
 }) => {
   return (
-    <TouchableOpacity style={styles.button} activeOpacity={0.5} {...props}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      {...props}
+      style={[styles.button, props.style]}
+    >
       <View style={styles.container}>
         <View style={styles.placeholderContainer}>
-          <Text style={styles.placeholder} numberOfLines={1}>
+          <Text
+            numberOfLines={1}
+            {..._text}
+            style={[styles.placeholder, _text?.style]}
+          >
             {children}
           </Text>
         </View>
         <View style={styles.arrowContainer}>
           <Image
             source={require('../../assets/arrow-down.png')}
-            style={styles.arrow}
+            {..._image}
+            style={[styles.arrow, _image?.style]}
           />
         </View>
       </View>

@@ -1,12 +1,34 @@
-import type { BottomSheetSelectProps } from '../BottomSheetSelect/types';
+import type {
+  BottomSheetOptionType,
+  BottomSheetSelectProps,
+} from '../BottomSheetSelect/types';
 import type { BottomSheetTextInputProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetTextInput';
-import type { BottomSheetOptionType } from '../BottomSheetSelect/types';
 import type React from 'react';
+import type { ReactNode } from 'react';
+import type { GooglePoweredI } from 'rn-google-places-autocomplete';
+import type { FlatListProps } from 'react-native';
 
 export type GooglePlacesAutocompleteVisualizationType = 'bottom-sheet' | 'list';
 
+export interface ListI {
+  _flatlist: Omit<FlatListProps<BottomSheetOptionType>, 'data'>;
+  _search?: SearchInputProps;
+}
+
+export interface BottomSheetI
+  extends Omit<
+    BottomSheetSelectProps,
+    'children' | 'options' | 'selectedOption' | 'onChange'
+  > {
+  _search?: SearchInputProps;
+}
+
 export interface GooglePlacesAutocompleteProps
-  extends Omit<BottomSheetSelectProps, 'children' | 'options'> {
+  extends Pick<
+      BottomSheetSelectProps,
+      'selectedOption' | 'onChange' | 'renderFooter'
+    >,
+    GooglePoweredI {
   apiKey: string;
   searchPlaceholder?: string;
   // This function is useful to modify the search parameter key.
@@ -16,7 +38,11 @@ export interface GooglePlacesAutocompleteProps
 
   visualization?: GooglePlacesAutocompleteVisualizationType;
   delay?: number;
-  endpointType?: GooglePlacesEndpointsType;
+  endpointType?: GooglePlacesEndpointsType | string;
+  endpoints?: EndpointType;
+  _bottomSheet?: BottomSheetI;
+  _list?: ListI;
+  renderEmptyComponent?: React.ComponentType<any> | React.ReactElement;
 }
 
 export interface SearchInputProps
@@ -25,6 +51,7 @@ export interface SearchInputProps
   onClear?: () => void;
   defaultValue?: string;
   component?: React.FC;
+  renderClearButton?: (args: { onClear: () => void }) => ReactNode;
 }
 
 export interface SearchInputMethods {

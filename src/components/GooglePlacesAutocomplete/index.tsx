@@ -23,7 +23,7 @@ import useDebounceCallback from '../../hooks/useDebounceCallback';
 import useFetch from '../../hooks/useFetch';
 import type { BottomSheetOptionType } from '../BottomSheetSelect/types';
 import SearchInput from './SearchInput';
-import { endpoints } from './endpoints';
+import { endpoints as defaultEndpoints } from './endpoints';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import SelectItem from '../BottomSheetSelect/SelectItem';
 import Conditional from '../Conditional';
@@ -35,9 +35,16 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
   visualization = 'bottom-sheet',
   delay = 500,
   query,
+  endpoints: endpointsProp,
   onChange,
   apiKey,
-  ...rest
+  selectedOption,
+  renderPoweredComponent,
+  showPoweredByGoogle = true,
+  _bottomSheet,
+  _list,
+  renderFooter: renderFooterProp,
+  renderEmptyComponent,
 }) => {
   const [results, setResults] = useState<BottomSheetOptionType[]>([]);
 
@@ -47,8 +54,21 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
     TextSearchResponseI | PlaceAutocompleteResponseI
   >();
 
+  const endpoints = useMemo(
+    () => ({ ...defaultEndpoints, ...endpointsProp }),
+    [endpointsProp]
+  );
+
   const getPlaces = useDebounceCallback(async (value: string) => {
-    const endpoint = endpoints[endpointType];
+    const endpoint = endpoints[endpointType as keyof typeof endpoints];
+
+    if (!endpoint) {
+      return console.error(
+        `Endpoint ${endpointType} no correspond with supported endpoints. Supported endpoints: ${Object.keys(
+          endpoints
+        ).join(',')}`
+      );
+    }
     if (value === '') {
       setResults([]);
       return;
@@ -98,17 +118,24 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
   const renderHeader = useCallback(() => {
     return (
       <SearchInput
+        defaultValue={
+          // ignore N/A option as default value
+          selectedOption?.value ? selectedOption?.label : ''
+        }
+        component={BottomSheetTextInput}
+        {..._bottomSheet?._search}
         onChange={getPlaces}
         placeholder={searchPlaceholder}
         onClear={handleClear}
-        defaultValue={
-          // ignore N/A option as default value
-          rest.selectedOption?.value ? rest.selectedOption?.label : ''
-        }
-        component={BottomSheetTextInput}
       />
     );
-  }, [getPlaces, searchPlaceholder, handleClear, rest.selectedOption]);
+  }, [
+    _bottomSheet?._search,
+    getPlaces,
+    searchPlaceholder,
+    handleClear,
+    selectedOption,
+  ]);
 
   const mappedResults: BottomSheetOptionType[] = useMemo(
     () => [...results],
@@ -137,29 +164,53 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
       {visualization === 'bottom-sheet' ? (
         <BottomSheetSelect
           handleStyle={styles.handleStyle}
+          renderFooter={renderFooterProp ?? renderFooter}
+          {..._bottomSheet}
           options={results}
           onChange={onChange}
-          renderFooter={renderFooter}
+          selectedOption={selectedOption}
           renderHeader={renderHeader}
-          {...rest}
+          showPoweredByGoogle={showPoweredByGoogle}
+          renderPoweredComponent={renderPoweredComponent}
+          _flatlist={{
+            ..._bottomSheet?._flatlist,
+            ListEmptyComponent:
+              _bottomSheet?._flatlist?.ListEmptyComponent ??
+              renderEmptyComponent,
+          }}
           _container={{
-            ...rest._container,
-            style: [styles.bottomSheetContainer, rest._container?.style],
+            ..._bottomSheet?._container,
+            style: [
+              styles.bottomSheetContainer,
+              _bottomSheet?._container?.style,
+            ],
           }}
         />
       ) : (
         <>
           <SearchInput
+            defaultValue={selectedOption?.label ?? ''}
+            placeholder={searchPlaceholder}
+            {..._list?._search}
             onChange={getPlaces}
             ref={searchInputRef}
-            defaultValue={rest.selectedOption?.label ?? ''}
-            placeholder={searchPlaceholder}
             onClear={handleClear}
           />
 
-          <FlatList data={mappedResults} renderItem={renderListItem} />
-          <Conditional value={mappedResults.length > 0}>
-            <PoweredByGoogle />
+          <FlatList
+            renderItem={renderListItem}
+            {..._list?._flatlist}
+            ListEmptyComponent={
+              _list?._flatlist?.ListEmptyComponent ?? renderEmptyComponent
+            }
+            data={mappedResults}
+          />
+          <Conditional value={mappedResults.length > 0 && showPoweredByGoogle}>
+            {renderPoweredComponent ? (
+              renderPoweredComponent()
+            ) : (
+              <PoweredByGoogle />
+            )}
           </Conditional>
         </>
       )}

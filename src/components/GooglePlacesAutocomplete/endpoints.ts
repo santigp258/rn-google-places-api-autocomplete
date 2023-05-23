@@ -13,6 +13,7 @@ export const endpoints: EndpointType = {
         response?.results?.map((result) => ({
           label: result.formatted_address,
           value: result.place_id,
+          extra: result,
         })) ?? []
       );
     },
@@ -24,6 +25,7 @@ export const endpoints: EndpointType = {
         response?.predictions?.map((prediction) => ({
           label: prediction.description,
           value: prediction.place_id,
+          extra: prediction,
         })) ?? []
       );
     },
