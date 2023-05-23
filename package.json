@@ -1,5 +1,5 @@
 {
-  "name": "rn-google-places-autocomplete",
+  "name": "rn-google-places-api-autocomplete",
   "version": "0.1.0",
   "description": "A customizable autocomplete component made for React Native that interacts with the Google Places API, which has several ways to visualize the places.",
   "main": "lib/commonjs/index",
@@ -24,7 +24,6 @@
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
-    "!**/images",
     "!**/.*"
   ],
   "scripts": {
@@ -47,13 +46,13 @@
     "places",
     "autocomplete"
   ],
-  "repository": "https://github.com/santigp258/rn-google-places-autocomplete",
+  "repository": "https://github.com/santigp258/rn-google-places-api-autocomplete",
   "author": "santigp258 <santigp258@gmail.com> (https://github.com/santigp258)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/santigp258/rn-google-places-autocomplete/issues"
+    "url": "https://github.com/santigp258/rn-google-places-api-autocomplete/issues"
   },
-  "homepage": "https://github.com/santigp258/rn-google-places-autocomplete#readme",
+  "homepage": "https://github.com/santigp258/rn-google-places-api-autocomplete#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

@@ -1,7 +1,7 @@
 import type {
   PlaceAutocompleteResponseI,
   TextSearchResponseI,
-} from 'rn-google-places-autocomplete';
+} from '../../types';
 import type { BottomSheetOptionType } from '../BottomSheetSelect/types';
 import type { EndpointType } from './types';
 

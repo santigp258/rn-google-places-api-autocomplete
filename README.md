@@ -1,9 +1,9 @@
-# rn-google-places-autocomplete
+# rn-google-places-api-autocomplete
 
-[<img src="https://img.shields.io/npm/v/rn-google-places-autocomplete?style=for-the-badge">](https://www.npmjs.com/package/rn-google-places-autocomplete)
-<img src="https://img.shields.io/npm/types/rn-google-places-autocomplete?label=%20&amp;logo=typescript&amp;logoColor=white&amp;style=for-the-badge">
-<img src="https://img.shields.io/npm/dt/rn-google-places-autocomplete?style=for-the-badge" >
-[<img src="https://img.shields.io/bundlephobia/minzip/rn-google-places-autocomplete?style=for-the-badge">](https://bundlephobia.com/package/rn-google-places-autocomplete)
+[<img src="https://img.shields.io/npm/v/rn-google-places-api-autocomplete?style=for-the-badge">](https://www.npmjs.com/package/rn-google-places-api-autocomplete)
+<img src="https://img.shields.io/npm/types/rn-google-places-api-autocomplete?label=%20&amp;logo=typescript&amp;logoColor=white&amp;style=for-the-badge">
+<img src="https://img.shields.io/npm/dt/rn-google-places-api-autocomplete?style=for-the-badge" >
+[<img src="https://img.shields.io/bundlephobia/minzip/rn-google-places-api-autocomplete?style=for-the-badge">](https://bundlephobia.com/package/rn-google-places-api-autocomplete)
 
 A customizable autocomplete component made for React Native that interacts with the Google Places API, which has several
 ways to visualize the places.
@@ -15,19 +15,19 @@ ways to visualize the places.
 #### Using npm
 
 ```bash
-npm i rn-google-places-autocomplete
+npm i rn-google-places-api-autocomplete
 ```
 
 #### Using Yarn
 
 ```bash
-yarn add rn-google-places-autocomplete
+yarn add rn-google-places-api-autocomplete
 ```
 
 #### Using pnpm
 
 ```bash
-pnpm add rn-google-places-autocomplete
+pnpm add rn-google-places-api-autocomplete
 ```
 
 ### 1. Google Places API KEY
@@ -52,7 +52,7 @@ the [bottom sheet modal provider](https://gorhom.github.io/react-native-bottom-s
 ```tsx
 import React from "react"
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GooglePlacesAutocomplete } from 'rn-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from 'rn-google-places-api-autocomplete';
 
 const App = () => {
   return (
@@ -73,7 +73,7 @@ const App = () => {
 ```tsx
 import React, { useState } from 'react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GooglePlacesAutocomplete, BottomSheetOptionType } from 'rn-google-places-autocomplete';
+import { GooglePlacesAutocomplete, BottomSheetOptionType } from 'rn-google-places-api-autocomplete';
 
 const App = () => {
   const [selectedOption, setSelectedOption] =
@@ -99,7 +99,7 @@ const App = () => {
 ```tsx
 import React from 'react';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GooglePlacesAutocomplete } from 'rn-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from 'rn-google-places-api-autocomplete';
 
 const App = () => {
   return (

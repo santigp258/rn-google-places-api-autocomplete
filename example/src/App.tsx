@@ -3,8 +3,8 @@ import { useState } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import type { BottomSheetOptionType } from 'rn-google-places-autocomplete';
-import { GooglePlacesAutocomplete } from 'rn-google-places-autocomplete';
+import type { BottomSheetOptionType } from 'rn-google-places-api-autocomplete';
+import { GooglePlacesAutocomplete } from 'rn-google-places-api-autocomplete';
 
 export default function App() {
   const [selectedOption, setSelectedOption] =

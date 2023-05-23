@@ -5,7 +5,7 @@ import type {
 import type { BottomSheetTextInputProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetTextInput';
 import type React from 'react';
 import type { ReactNode } from 'react';
-import type { GooglePoweredI } from 'rn-google-places-autocomplete';
+import type { GooglePoweredI } from '../../types';
 import type { FlatListProps } from 'react-native';
 
 export type GooglePlacesAutocompleteVisualizationType = 'bottom-sheet' | 'list';

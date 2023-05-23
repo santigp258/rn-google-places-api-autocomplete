@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "rn-google-places-autocomplete": ["./src/index"]
+      "rn-google-places-api-autocomplete": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

@@ -7,10 +7,7 @@ import type {
   ViewProps,
 } from 'react-native';
 import type { BottomSheetFilterProps } from '../BottomSheetFilter/types';
-import type {
-  ClosableType,
-  GooglePoweredI,
-} from 'rn-google-places-autocomplete';
+import type { ClosableType, GooglePoweredI } from '../../types';
 import type { BottomSheetViewProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetView/types';
 import type { ReactNode } from 'react';
 
