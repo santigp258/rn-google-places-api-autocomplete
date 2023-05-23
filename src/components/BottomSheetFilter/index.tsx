@@ -70,9 +70,11 @@ const BottomSheetFilter = React.forwardRef<
           footerComponent={renderFooterComponent}
           {...props}
         >
-          {typeof children === 'function'
-            ? children({ onOpen, onClose })
-            : children}
+          <>
+            {typeof children === 'function'
+              ? children({ onOpen, onClose })
+              : children}
+          </>
         </BottomSheetModal>
       </>
     );

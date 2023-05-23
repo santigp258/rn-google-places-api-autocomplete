@@ -5,7 +5,7 @@ import type { ClosableType } from '../../types';
 export type BottomSheetModalPropsI = Omit<BottomSheetModalProps, 'children'>;
 
 export interface BottomSheetFilterProps
-  extends Partial<BottomSheetModalPropsI> {
+  extends Partial<Omit<BottomSheetModalPropsI, 'children'>> {
   renderButton?: (args: ClosableType) => ReactNode;
   renderFooter?: (args: ClosableType) => ReactNode;
   children?: ReactNode | ((args: ClosableType) => void);
