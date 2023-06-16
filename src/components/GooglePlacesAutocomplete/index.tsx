@@ -24,10 +24,10 @@ import useFetch from '../../hooks/useFetch';
 import type { BottomSheetOptionType } from '../BottomSheetSelect/types';
 import SearchInput from './SearchInput';
 import { endpoints as defaultEndpoints } from './endpoints';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import SelectItem from '../BottomSheetSelect/SelectItem';
 import Conditional from '../Conditional';
 import PoweredByGoogle from './PoweredByGoogle';
+import type { ClosableWithExtraType } from '../BottomSheetFilter/types';
 
 const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
   searchPlaceholder = 'Search ',
@@ -122,7 +122,7 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
           // ignore N/A option as default value
           selectedOption?.value ? selectedOption?.label : ''
         }
-        component={BottomSheetTextInput}
+        // component={BottomSheetTextInput}
         {..._bottomSheet?._search}
         onChange={getPlaces}
         placeholder={searchPlaceholder}
@@ -159,12 +159,20 @@ const GooglePlacesAutocomplete: FC<GooglePlacesAutocompleteProps> = ({
     [onChange]
   );
 
+  const _renderFooter = useCallback(
+    (props: ClosableWithExtraType) => {
+      const fn = renderFooterProp ?? renderFooter;
+      return fn?.({ ...props, isLoading });
+    },
+    [isLoading, renderFooter, renderFooterProp]
+  );
+
   return (
     <>
       {visualization === 'bottom-sheet' ? (
         <BottomSheetSelect
           handleStyle={styles.handleStyle}
-          renderFooter={renderFooterProp ?? renderFooter}
+          renderFooter={_renderFooter}
           {..._bottomSheet}
           options={results}
           onChange={onChange}
