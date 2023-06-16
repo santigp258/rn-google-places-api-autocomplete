@@ -1,6 +1,6 @@
 {
   "name": "rn-google-places-api-autocomplete",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A customizable autocomplete component made for React Native that interacts with the Google Places API, which has several ways to visualize the places.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
